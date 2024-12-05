@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección de Categorías</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label, select, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        select, button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9f7ef;
+            border: 1px solid #d4edda;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Selecciona una Categoría</h1>
+        <label for="main-category">Categoría Principal:</label>
+        <select id="main-category" onchange="updateSubcategories()">
+            <option value="">Seleccione una categoría</option>
+            <option value="academicas">Materias Académicas</option>
+            <option value="life">LiFe</option>
+            <option value="tesoreria">Tesorería</option>
+        </select>
+
+        <label for="sub-category">Subcategoría:</label>
+        <select id="sub-category">
+            <option value="">Seleccione una subcategoría</option>
+        </select>
+
+        <button onclick="showContact()">Mostrar Contacto</button>
+
+        <div id="result" class="result" style="display: none;">
+            <p id="contact-info"></p>
+        </div>
+    </div>
+
+    <script>
+        const contacts = {
+            academicas: {
+                "cambio-materia": "Contacto: Juan Pérez (correo: juan.perez@ejemplo.com)",
+                "cambio-horario": "Contacto: María López (correo: maria.lopez@ejemplo.com)",
+                "cambio-nivel": "Contacto: Ana Rodríguez (correo: ana.rodriguez@ejemplo.com)"
+            },
+            life: {
+                "horarios-representativos": "Contacto: Pedro García (correo: pedro.garcia@ejemplo.com)",
+                "platica-coach": "Contacto: Laura Hernández (correo: laura.hernandez@ejemplo.com)",
+                "inscripciones": "Contacto: José Martínez (correo: jose.martinez@ejemplo.com)"
+            },
+            tesoreria: {
+                "monto-pago": "Contacto: Carlos Ruiz (correo: carlos.ruiz@ejemplo.com)",
+                "becas": "Contacto: Marta Jiménez (correo: marta.jimenez@ejemplo.com)",
+                "cambio-beca": "Contacto: Luis Torres (correo: luis.torres@ejemplo.com)",
+                "peticion-beca": "Contacto: Sofía Gómez (correo: sofia.gomez@ejemplo.com)",
+                "cancelacion-seguro": "Contacto: Raúl Fernández (correo: raul.fernandez@ejemplo.com)"
+            }
+        };
+
+        function updateSubcategories() {
+            const mainCategory = document.getElementById("main-category").value;
+            const subCategory = document.getElementById("sub-category");
+
+            subCategory.innerHTML = '<option value="">Seleccione una subcategoría</option>';
+
+            if (mainCategory && contacts[mainCategory]) {
+                const subcategories = Object.keys(contacts[mainCategory]);
+                subcategories.forEach(sub => {
+                    const option = document.createElement("option");
+                    option.value = sub;
+                    option.textContent = sub.replace(/-/g, " ");
+                    subCategory.appendChild(option);
+                });
+            }
+        }
+
+        function showContact() {
+            const mainCategory = document.getElementById("main-category").value;
+            const subCategory = document.getElementById("sub-category").value;
+            const resultDiv = document.getElementById("result");
+            const contactInfo = document.getElementById("contact-info");
+
+            if (mainCategory && subCategory && contacts[mainCategory][subCategory]) {
+                contactInfo.textContent = contacts[mainCategory][subCategory];
+                resultDiv.style.display = "block";
+            } else {
+                contactInfo.textContent = "Por favor, selecciona una categoría y subcategoría válidas.";
+                resultDiv.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
